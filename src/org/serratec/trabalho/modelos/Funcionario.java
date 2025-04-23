@@ -21,7 +21,7 @@ public class Funcionario extends Pessoa{
         return cargo;
     }
     
-    public static void cadastrarPlano (PlanoEnum plano, String descricao, double valor) {
+    public void cadastrarPlano (PlanoEnum plano, String descricao, double valor) {
 		if (PlanoMetodos.planoExistente(plano, descricao, valor)) {
 			System.out.println("Falha no cadastro: Plano já cadastrado."); //trocar por exceção
 			return;

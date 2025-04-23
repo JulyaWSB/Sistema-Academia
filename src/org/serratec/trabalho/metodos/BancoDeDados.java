@@ -44,7 +44,7 @@ public class BancoDeDados {
 		return alunos;
 	} 
 
-	public static List<Personal> listaPersonals() {
+	public static List<Personal> listaPersonal() {
 		return personals;
 	} 
 

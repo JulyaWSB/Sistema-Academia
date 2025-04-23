@@ -55,4 +55,9 @@ public class Personal extends Pessoa{
 	public Especialidades getEspecialidade() {
 		return especialidade;
 	}
+	
+	public void exibirPersonal() {
+		//fazer
+	}
+	
 }

@@ -28,8 +28,9 @@ public class Plano {
 		return valor;
 	}
 
-	@Override
-	public String toString() {
-		return String.format("%s - R$ %.2f", descricao, valor);
+	public void exibirPlano() {
+		System.out.println("Periodicidade: " + plano
+						+ "\nDescrição: " + descricao
+						+ "\nValor: R$" + valor);
 	}
 }

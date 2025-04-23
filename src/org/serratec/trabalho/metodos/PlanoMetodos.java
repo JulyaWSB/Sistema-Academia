@@ -17,9 +17,10 @@ public class PlanoMetodos {
 			System.out.println("Não há planos cadastrados.");
 			return;
 		}
+		System.out.println("--- Planos Disponíveis ---");
 		for (int i = 0; i < BancoDeDados.planos.size(); i++) {
 			Plano pl = BancoDeDados.planos.get(i);
-			System.out.println((i + 1) + ". " + pl.toString());
+			System.out.println((i + 1) + ". "); pl.exibirPlano();
 		}}
 
 	
