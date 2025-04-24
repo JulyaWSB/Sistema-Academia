@@ -1,10 +1,13 @@
 package org.serratec.trabalho.menu;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.List;
 import java.util.Scanner;
 
 import org.serratec.trabalho.enums.Especialidades;
 import org.serratec.trabalho.enums.PlanoEnum;
+import org.serratec.trabalho.excecoes.ValorInvalidoException;
 import org.serratec.trabalho.metodos.BancoDeDados;
 import org.serratec.trabalho.metodos.PlanoMetodos;
 import org.serratec.trabalho.modelos.Aluno;
@@ -66,7 +69,7 @@ public class Menu {
 		}while(opcao != 4);
 	}
 
-	public void exibirMenuFuncionario(Funcionario funcionarioLogado) {
+	public void exibirMenuFuncionario(Funcionario funcionarioLogado) throws ValorInvalidoException {
 		do {
 			String menu = """
 					\n____BEM-VINDO FUNCIONARIO____
@@ -87,8 +90,9 @@ public class Menu {
 			case 2 -> alunoCadastrar(funcionarioLogado);
 			case 3 -> personalCadastrar(funcionarioLogado);
 			//case 4 -> funcionarioLogado.emitirRelatorios(); // tem que ser feito ainda
-			//case 5 -> funcionarioLogado.valorTotalAReceber(); // tem que ser feito ainda
-			case 6 -> System.out.println("____Programa Encerrando____");
+			case 5 -> funcionarioLogado.exibirTotalReceberNoMes(BancoDeDados.listaAlunos());
+			case 6 -> funcionarioLogado.contarAlunosAtivosNoMes(BancoDeDados.listaAlunos());
+			case 7 -> System.out.println("____Programa Encerrando____");
 			default -> System.out.println("____Opção Invalida, tente novamente!____");
 			}
 
@@ -97,8 +101,9 @@ public class Menu {
 
 
 	// metodos para menus:
-	
+
 	public void personalContratar(Aluno alunoLogado) {
+		boolean achouPersonal = false;
 		if (BancoDeDados.listaPersonal().isEmpty()) {
 			System.out.println("Não há Personal Trainers disponíveis.");
 			return;
@@ -115,8 +120,13 @@ public class Menu {
 			if (p.getNome().equals(nomePersonal)) {
 				alunoLogado.contratarPersonal(p);
 				System.out.println("Personal contratado com sucesso!");
+				achouPersonal = true;
+				break;
+			} if (!achouPersonal) {
+				 System.out.println("Personal não encontrado. Verifique o nome digitado.");
+				 return;
 			}
-		}	
+			}
 	}
 
 	public void avaliacaoRegistrar(Personal personalLogado) {
@@ -136,7 +146,7 @@ public class Menu {
 		}}
 
 
-	public void planoCadastrar(Funcionario funcionarioLogado) {
+	public void planoCadastrar(Funcionario funcionarioLogado) throws ValorInvalidoException {
 		System.out.println("Escolha a periodicidade:\nMENSAL_1_MODALIDADE\n"
 				+ "    MENSAL_2_MODALIDADES\n"
 				+ "    MENSAL_TOTAL\n"
@@ -147,12 +157,12 @@ public class Menu {
 		PlanoEnum period = PlanoEnum.valueOf(periodicidade);
 		System.out.println("\nRegistre a descrição: ");
 		String descricao = sc.nextLine();
-		
+
 		System.out.println("Informe o valor: R$");
 		Double valor = sc.nextDouble();
 		funcionarioLogado.cadastrarPlano(period, descricao, valor);
 	}
-	
+
 	public void alunoCadastrar(Funcionario funcionarioLogado){
 		System.out.println("Insira o nome do aluno: ");
 		String nome = sc.nextLine();
@@ -163,7 +173,7 @@ public class Menu {
 		System.out.println("Data de matricula: ");
 		String data = sc.nextLine();
 		LocalDate dataMatricula = LocalDate.parse(data);
-		
+
 		PlanoMetodos.listarPlanos();
 		System.out.println("Digite o número do plano desejado:");
 		int numPlano = sc.nextInt();
@@ -173,10 +183,10 @@ public class Menu {
 			return;
 		}
 		Plano planoEscolhido= BancoDeDados.planos.get(numPlano -1);
-		
+
 		funcionarioLogado.cadastrarAluno(nome, cpf, senha, dataMatricula, planoEscolhido);
-		}
-	
+	}
+
 
 	public void personalCadastrar(Funcionario funcionarioLogado){
 		System.out.println("Insira o nome do personal: ");
@@ -192,6 +202,6 @@ public class Menu {
 		funcionarioLogado.cadastrarPersonal(nome, cpf, senha, cref, espec);
 	}
 
-	
+
 }
 
