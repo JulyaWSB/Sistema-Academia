@@ -9,10 +9,12 @@ import java.util.Scanner;
 import org.serratec.trabalho.enums.CargoFuncionario;
 import org.serratec.trabalho.enums.Especialidades;
 import org.serratec.trabalho.enums.PlanoEnum;
+import org.serratec.trabalho.excecoes.PlanoExcecao;
 import org.serratec.trabalho.excecoes.ValorInvalidoException;
 import org.serratec.trabalho.metodos.BancoDeDados;
 import org.serratec.trabalho.metodos.PlanoMetodos;
 import org.serratec.trabalho.metodos.UsuarioMetodos;
+import org.serratec.trabalho.relatorios.RelatorioAvaliacaoMensal;
 
 public class Funcionario extends Pessoa{
 	private CargoFuncionario cargo;
@@ -26,15 +28,14 @@ public class Funcionario extends Pessoa{
         return cargo;
     }
     
-    public void cadastrarPlano (PlanoEnum plano, String descricao, double valor) throws ValorInvalidoException {
-		if (PlanoMetodos.planoExistente(plano, descricao, valor)) {
-			System.out.println("Falha no cadastro: Plano já cadastrado."); //trocar por exceção
-			return;
-		}
-		Plano novoPlano = new Plano(plano, descricao, valor);
-		BancoDeDados.adicionarPlano(novoPlano);
-		System.out.println("Plano cadastrado com sucesso!");
-	}
+    public void cadastrarPlano(PlanoEnum plano, String descricao, double valor) throws PlanoExcecao, ValorInvalidoException {
+        if (PlanoMetodos.planoExistente(plano, descricao, valor)) {
+            throw new PlanoExcecao("Plano já cadastrado.");
+        }
+        Plano novoPlano = new Plano(plano, descricao, valor);
+        BancoDeDados.adicionarPlano(novoPlano);
+        System.out.println("Plano cadastrado com sucesso!");
+    }
 
 	public void cadastrarAluno(String nome, String cpf, String senha, LocalDate dataMatricula, Plano plano) {
 		if (UsuarioMetodos.cpfExistente(cpf)) {
@@ -58,13 +59,31 @@ public class Funcionario extends Pessoa{
 	}
 	
 	public void emitirRelatorios() {
-		
-	} 
-	
-	public void valorTotalReceber() {
-	       /*O item 5 do funcionário deverá mostrar, de acordo com o plano vinculado a
-	    	cada aluno o valor total esperado de faturamento no mês;*/
-	    }
+        Scanner scanner = new Scanner(System.in);
+        int opcao;
+        do {
+            String menu = """
+                    \n____MENU DE RELATÓRIOS____
+                    1. Relatório de Avaliações
+                    2. Relatório de Planos
+                    3. Relatório de Pessoas
+                    4. Sair
+                    """;
+            System.out.println(menu);
+            opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1 ->  new RelatorioAvaliacaoMensal().gerar(); // Relatório de Avaliações
+                //case 2->
+                //case 3->
+                //case 4 ->
+                   
+                default ->
+                    System.out.println("Opção inválida! Tente novamente.");
+            }
+        } while (opcao != 4);
+    }
 	
 	public void exibirTotalReceberNoMes(List<Aluno> alunos) {
         Scanner scanner = new Scanner(System.in);

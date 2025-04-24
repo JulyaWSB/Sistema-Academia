@@ -36,6 +36,6 @@ public class Avaliacao {
 		System.out.println("\nData: " + data);
 		System.out.println("\nPersonal " + personal);
 		System.out.println("\nDescricao: " + descricao);
-    }
-}
+    }}
+
 

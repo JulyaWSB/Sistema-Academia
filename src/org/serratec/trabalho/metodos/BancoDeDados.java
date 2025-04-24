@@ -69,7 +69,7 @@ public class BancoDeDados {
 		} return porAluno;
 	}
 
-	public static List<Avaliacao> listaAvaliacoesPorPeriodo(LocalDate inicio, LocalDate fim){
+	/*public static List<Avaliacao> listaAvaliacoesPorPeriodo(LocalDate inicio, LocalDate fim){
 		List <Avaliacao> porPeriodo = new ArrayList<>();
 		for (Avaliacao avaliacao : listaAvaliacoes()) {
 			if ( (avaliacao.getData().isEqual(inicio) || avaliacao.getData().isAfter(inicio)) &&  
@@ -77,7 +77,7 @@ public class BancoDeDados {
 				porPeriodo.add(avaliacao);
 			}
 		} return porPeriodo;
-	}
+	}*/
 	
 	public static void adicionarPessoaNaListaCorreta(Pessoa pessoa) {
 	    if (pessoa instanceof Aluno) {
@@ -96,15 +96,14 @@ public class BancoDeDados {
 		todos.addAll(funcionarios);
 		return todos;
 	}
-
-
 	public static Pessoa buscarPessoaPorCpf(String cpf){
 		for (Pessoa p : listaTodasAsPessoas()) {
 			if (p.getCpf().equals(cpf)) {
 				return p;
 			}
 		} return null; //substituir por exceção: UsuarioNaoEncontradoException(); 
-	}}
+	}
+}
 
 
 

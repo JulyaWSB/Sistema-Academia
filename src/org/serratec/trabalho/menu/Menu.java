@@ -2,10 +2,14 @@ package org.serratec.trabalho.menu;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import org.serratec.trabalho.enums.Especialidades;
 import org.serratec.trabalho.enums.PlanoEnum;
+import org.serratec.trabalho.excecoes.CpfDuplicadosExcecao;
+import org.serratec.trabalho.excecoes.LoginExcecao;
+import org.serratec.trabalho.excecoes.PlanoExcecao;
 import org.serratec.trabalho.excecoes.ValorInvalidoException;
 import org.serratec.trabalho.metodos.BancoDeDados;
 import org.serratec.trabalho.metodos.PlanoMetodos;
@@ -20,7 +24,7 @@ public class Menu {
 	Scanner sc = new Scanner(System.in);
 	
 	    public static void Login() throws ValorInvalidoException {
-	    	Scanner sc = new Scanner(System.in);
+	    Scanner sc = new Scanner(System.in);
 	    System.out.println("\n ----Login----");
 	    System.out.println("Insira seu Cpf: ");
 	    String cpf = sc.nextLine();
@@ -28,13 +32,19 @@ public class Menu {
 	    System.out.println("Insira sua senha: ");
 	    String senha = sc.nextLine();
 	    
-	    Pessoa pessoaLogada = UsuarioMetodos.validarLogin(cpf, senha);
-	    
-	    exibirMenuCorreto(pessoaLogada);
+	    Pessoa pessoaLogada;
+		try {
+			pessoaLogada = UsuarioMetodos.validarLogin(cpf, senha);
+			exibirMenuCorreto(pessoaLogada);
+		} catch (LoginExcecao e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+	       
 	}
 	
 	
-	public static  void exibirMenuCorreto(Pessoa pessoaLogada) throws ValorInvalidoException { // mudar esse metodo para o login? tem que receber a pessoa que vem no "validarLogin"
+	public static  void exibirMenuCorreto(Pessoa pessoaLogada) throws ValorInvalidoException { 
 		if (pessoaLogada instanceof Aluno) {
 			exibirMenuAluno((Aluno) pessoaLogada);
 		} else if (pessoaLogada instanceof Personal) {
@@ -111,6 +121,7 @@ public class Menu {
 		Scanner sc = new Scanner(System.in);
 		int opcao;
 		do {
+			System.out.println("\\n____BEM-VINDO FUNCIONARIO____" + funcionarioLogado.getNome());
 			String menu = """
 					\n____BEM-VINDO FUNCIONARIO____
 					\n____MENU____
@@ -131,7 +142,7 @@ public class Menu {
 			case 1 -> planoCadastrar(funcionarioLogado);
 			case 2 -> alunoCadastrar(funcionarioLogado);
 			case 3 -> personalCadastrar(funcionarioLogado);
-			//case 4 -> funcionarioLogado.emitirRelatorios(); // tem que ser feito ainda
+			case 4 -> funcionarioLogado.emitirRelatorios(); 
 			case 5 -> funcionarioLogado.exibirTotalReceberNoMes(BancoDeDados.listaAlunos());
 			case 6 -> funcionarioLogado.contarAlunosAtivosNoMes(BancoDeDados.listaAlunos());
 			case 7 -> retornoLogin();
@@ -185,7 +196,7 @@ public class Menu {
 				System.out.println("Insira a data do registro: ");
 				String data = sc.nextLine();
 				DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-				LocalDate dataRegistro = LocalDate.parse(data, formatador);; //adicionar tratamento caso insira data em formato invalido??
+				LocalDate dataRegistro = LocalDate.parse(data, formatador); //adicionar tratamento caso insira data em formato invalido??
 				System.out.println("Descrição da avaliação:");
 				String descricao = sc.nextLine();
 				personalLogado.registrarAvaliacao(al, dataRegistro, personalLogado, descricao);
@@ -197,26 +208,36 @@ public class Menu {
 	}
 
 
-	public static void planoCadastrar(Funcionario funcionarioLogado)  { //podemos adicionar alguns tratamentos de erros
+	public static void planoCadastrar(Funcionario funcionarioLogado) throws ValorInvalidoException  { //podemos adicionar alguns tratamentos de erros
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Escolha a periodicidade:\nMENSAL_1_MODALIDADE\n"
-				+ "    MENSAL_2_MODALIDADES\n"
-				+ "    MENSAL_TOTAL\n"
-				+ "    TRIMESTRAL_TOTAL\n"
-				+ "    SEMESTRAL_TOTAL\n"
-				+ "    ANUAL_TOTAL");
-		String periodicidade = sc.nextLine().toUpperCase();
-		PlanoEnum period = PlanoEnum.valueOf(periodicidade);
-		System.out.println("\nRegistre a descrição: ");
-		String descricao = sc.nextLine();
-
-		System.out.println("Informe o valor: R$");
-		Double valor = sc.nextDouble();
 		try {
-			funcionarioLogado.cadastrarPlano(period, descricao, valor);
-		} catch (ValorInvalidoException e) {
-			e.printStackTrace();
-		}
+	        System.out.println("Escolha a periodicidade:\nMENSAL_1_MODALIDADE\n"
+	                + "MENSAL_2_MODALIDADES\n"
+	                + "MENSAL_TOTAL\n"
+	                + "TRIMESTRAL_TOTAL\n"
+	                + "SEMESTRAL_TOTAL\n"
+	                + "ANUAL_TOTAL");
+	        String periodicidade = sc.nextLine().toUpperCase();
+
+	        PlanoEnum period = PlanoEnum.valueOf(periodicidade); 
+
+	        System.out.println("\nRegistre a descrição: ");
+	        String descricao = sc.nextLine();
+
+	        System.out.println("Informe o valor: R$");
+	        Double valor = sc.nextDouble();
+	        sc.nextLine();
+
+	        funcionarioLogado.cadastrarPlano(period, descricao, valor);
+
+	    } catch (PlanoExcecao e) {
+	        System.out.println("Erro ao cadastrar plano: " + e.getMessage());
+	    } catch (IllegalArgumentException e) {
+	        System.out.println("Periodicidade inválida. Por favor, digite uma opção válida.");
+	    } catch (InputMismatchException e) {
+	        System.out.println("Erro: valor inválido. Certifique-se de digitar um número para o valor.");
+	        sc.nextLine();
+	    }
 	}
 
 	public static void alunoCadastrar(Funcionario funcionarioLogado){
@@ -225,6 +246,16 @@ public class Menu {
 		String nome = sc.nextLine();
 		System.out.println("Insira o CPF: ");
 		String cpf = sc.nextLine();
+		for (Pessoa pessoa : BancoDeDados.listaTodasAsPessoas()) {
+	        if (pessoa.getCpf().equals(cpf)) {
+	            try {
+	                throw new CpfDuplicadosExcecao(cpf);
+	            } catch (CpfDuplicadosExcecao e) {
+	                System.out.println("Erro: " + e.getMessage());
+	                return;
+	            }
+	        }
+	    }
 		System.out.println("Insira a senha: ");
 		String senha = sc.nextLine();
 		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -253,6 +284,16 @@ public class Menu {
 		String nome = sc.nextLine();
 		System.out.println("Insira o CPF: ");
 		String cpf = sc.nextLine();
+		for (Pessoa pessoa : BancoDeDados.listaTodasAsPessoas()) {
+	        if (pessoa.getCpf().equals(cpf)) {
+	            try {
+	                throw new CpfDuplicadosExcecao(cpf);
+	            } catch (CpfDuplicadosExcecao e) {
+	                System.out.println("Erro: " + e.getMessage());
+	                return;
+	            }
+	        }
+		}
 		System.out.println("Insira a senha: ");
 		String senha = sc.nextLine();
 		System.out.println("Insira a CREF:");
@@ -265,6 +306,7 @@ public class Menu {
 	public static void retornoLogin() throws ValorInvalidoException {
 		Login();
 	}
+	
 
 }
 
