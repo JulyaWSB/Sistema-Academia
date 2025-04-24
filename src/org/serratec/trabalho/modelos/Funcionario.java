@@ -75,7 +75,7 @@ public class Funcionario extends Pessoa{
 
             switch (opcao) {
                 case 1 ->  new RelatorioAvaliacaoMensal().gerar(); // Relatório de Avaliações
-                //case 2->
+                //case 2-> 
                 //case 3->
                 //case 4 ->
                    

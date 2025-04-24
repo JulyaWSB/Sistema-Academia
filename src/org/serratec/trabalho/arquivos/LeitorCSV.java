@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.serratec.trabalho.enums.CargoFuncionario;
@@ -24,10 +23,10 @@ import org.serratec.trabalho.modelos.Plano;
 
 public class LeitorCSV {
 
-	public static void main(String[] args) {
+	public static void inicializador(){
 
 // Ler Alunos
-		Path path = Paths.get("C:\\Users\\PcGamer\\eclipse-workspace\\ArquivoCSVtravalho\\aluno.txt");
+		Path path = Paths.get("C:\\Users\\SERRAE\\Desktop\\Trabalho POO\\Sistema-Academia\\aluno.csv");
 
 		try (BufferedReader reader = Files.newBufferedReader(path)){
 			String linha = reader.readLine(); //vai ignorar o cabeçalho igual a prof ensinou
@@ -40,7 +39,7 @@ public class LeitorCSV {
 				String dataMatricula = campos[3];
 				int indicePlano = Integer.parseInt(campos[4]);
 
-				DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 				LocalDate dataRegistro = LocalDate.parse(dataMatricula, formatador);
 				
 				List<Plano> planos = BancoDeDados.listaPlanos();

@@ -195,7 +195,7 @@ public class Menu {
 			if (al.getNome().equalsIgnoreCase(nomeAluno)) {
 				System.out.println("Insira a data do registro: ");
 				String data = sc.nextLine();
-				DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 				LocalDate dataRegistro = LocalDate.parse(data, formatador); //adicionar tratamento caso insira data em formato invalido??
 				System.out.println("Descrição da avaliação:");
 				String descricao = sc.nextLine();
@@ -258,7 +258,7 @@ public class Menu {
 	    }
 		System.out.println("Insira a senha: ");
 		String senha = sc.nextLine();
-		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		System.out.println("Data de matricula: ");
 		String data = sc.nextLine();
 		LocalDate dataMatricula = LocalDate.parse(data, formatador);

@@ -1,6 +1,7 @@
 package org.serratec.trabalho.modelos;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.serratec.trabalho.metodos.BancoDeDados;
 
@@ -15,6 +16,8 @@ public class Aluno extends Pessoa implements GerarRelatorio{
 		this.dataMatricula = dataMatricula;
 		this.plano = plano;
 	}
+	
+	private DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	public void contratarPersonal(Personal personal) {
 		if (possuiPersonal()) {
@@ -37,7 +40,7 @@ public class Aluno extends Pessoa implements GerarRelatorio{
 	public void exibirDados() { // usar esse como visualizarDadosPessoais 
 		System.out.println("Nome: " + nome);
 		System.out.println("\nCPF: " + cpf);
-		System.out.println("\nData de matricula: " + dataMatricula);
+		System.out.println("\nData de matricula: " + formatador.format(dataMatricula));
 		System.out.println("\nPlano: "); plano.exibirPlano();
 		System.out.println(personalContratado != null? "\nPersonal contratado: "  + personalContratado : "");
 	}
@@ -48,7 +51,7 @@ public class Aluno extends Pessoa implements GerarRelatorio{
 		} else {
 			System.out.println("---Avaliações de " + aluno.getNome() + "---");
 			for (Avaliacao av : BancoDeDados.listaAvaliacoesPorAluno(aluno)) {
-				System.out.println("Data: "+ av.getData());
+				System.out.println("Data: "+ formatador.format(av.getData()));
 				System.out.println("Personal: " ); av.getPersonal().exibirPersonal();
 				System.out.println("Descrição: " + av.getDescricao());
 			}

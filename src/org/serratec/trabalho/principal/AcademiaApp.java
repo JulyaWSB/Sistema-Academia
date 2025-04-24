@@ -2,6 +2,7 @@ package org.serratec.trabalho.principal;
 
 import java.time.LocalDate;
 
+import org.serratec.trabalho.arquivos.LeitorCSV;
 import org.serratec.trabalho.enums.CargoFuncionario;
 import org.serratec.trabalho.enums.Especialidades;
 import org.serratec.trabalho.enums.PlanoEnum;
@@ -21,12 +22,14 @@ public class AcademiaApp {
 		BancoDeDados.adicionarPessoaNaListaCorreta(personal);
 		Plano plano = new Plano(PlanoEnum.MENSAL_1_MODALIDADE, "Qualquer coisa", 200.00);
 		BancoDeDados.adicionarPlano(plano);
-		Pessoa aluno = new Aluno("Leo", "789456123-22", "3216", LocalDate.parse("2025-04-10"), plano );
+		Pessoa aluno = new Aluno("Julya", "22", "3216", LocalDate.parse("2025-04-10"), plano );
 		BancoDeDados.adicionarPessoaNaListaCorreta(aluno);
 		Pessoa funcionario = new Funcionario("Paulo", "22", "9874", CargoFuncionario.DONO);
 		BancoDeDados.adicionarPessoaNaListaCorreta(funcionario);
-				
+
+	LeitorCSV.inicializador();
 	Menu.Login();
+
 	}
 
 }
