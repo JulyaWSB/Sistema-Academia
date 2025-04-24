@@ -57,7 +57,15 @@ public class Personal extends Pessoa{
 	}
 	
 	public void exibirPersonal() {
-		//fazer
+		System.out.println("Nome:" + nome);
+		System.out.println("Especialidade:" + especialidade);
 	}
+
+	@Override
+	public String toString() {
+		return nome  + "\nEspecialidade: " + especialidade;
+	}
+	
+	
 	
 }

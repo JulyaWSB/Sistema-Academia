@@ -42,8 +42,8 @@ public class Funcionario extends Pessoa{
 			return;
 		}
 
-		Aluno novoAluno = new Aluno(nome, cpf, senha, dataMatricula, plano);
-		BancoDeDados.adicionarAluno(novoAluno);
+		Pessoa novoAluno = new Aluno(nome, cpf, senha, dataMatricula, plano);
+		BancoDeDados.adicionarPessoaNaListaCorreta(novoAluno);
 		System.out.println("Aluno cadastrado com sucesso!");
 	}
 
@@ -52,8 +52,8 @@ public class Funcionario extends Pessoa{
 			System.out.println("Falha no cadastro: CPF já cadastrado.");// trocar por exceções? 
 			return;
 		} 
-		Personal novoPersonal = new Personal(nome, cpf, senha, cref, especialidade);
-		BancoDeDados.adicionarPersonal(novoPersonal);
+		Pessoa novoPersonal = new Personal(nome, cpf, senha, cref, especialidade);
+		BancoDeDados.adicionarPessoaNaListaCorreta(novoPersonal);
 		System.out.println("Personal cadastrado com sucesso!"); 
 	}
 	

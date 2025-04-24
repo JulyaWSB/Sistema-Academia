@@ -78,6 +78,16 @@ public class BancoDeDados {
 			}
 		} return porPeriodo;
 	}
+	
+	public static void adicionarPessoaNaListaCorreta(Pessoa pessoa) {
+	    if (pessoa instanceof Aluno) {
+	        BancoDeDados.adicionarAluno((Aluno) pessoa);
+	    } else if (pessoa instanceof Personal) {
+	        BancoDeDados.adicionarPersonal((Personal) pessoa);
+	    } else if (pessoa instanceof Funcionario) {
+	        BancoDeDados.adicionarFuncionario((Funcionario) pessoa);
+	    }
+	}
 
 	public static List<Pessoa> listaTodasAsPessoas() {
 		List<Pessoa> todos = new ArrayList<>();
