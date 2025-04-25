@@ -24,11 +24,72 @@ import org.serratec.trabalho.modelos.Plano;
 public class LeitorCSV {
 
 	public static void inicializador(){
+//		Ler Planos	
 
+		Path path1 = Paths.get("C:\\Users\\SERRAE\\Desktop\\Trabalho POO\\Sistema-Academia\\plano.csv");
+
+		try (BufferedReader br = Files.newBufferedReader(path1)) {
+			String linha = br.readLine();
+
+			while ((linha = br.readLine()) != null) {
+				String[] campos = linha.split(",");
+
+				String descricao = campos[1];
+				double valor = Double.parseDouble(campos[2]);
+				try {
+					PlanoEnum plano = PlanoEnum.valueOf(campos[0].toUpperCase());
+					try {
+						BancoDeDados.adicionarPlano(new Plano(plano,descricao,valor));
+					} catch (ValorInvalidoException e) {
+						 // tem que testar isso aqui, ou retirar esse try/catch
+						e.printStackTrace();
+					}
+				} catch (IllegalArgumentException e) {
+					System.out.println("Periodicidade inválida: " + campos[0]);
+				}
+			}
+
+			System.out.println("\nPlanos Lidos do Arquivo CSV: ");
+			BancoDeDados.listaPlanos().forEach(System.out::println);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+// Ler Personal
+		
+				Path path2 = Paths.get("C:\\Users\\SERRAE\\Desktop\\Trabalho POO\\Sistema-Academia\\personal.csv");
+
+				try (BufferedReader br = Files.newBufferedReader(path2)) {
+					String linha = br.readLine();
+
+					while ((linha = br.readLine()) != null) {
+						String[] campos = linha.split(",");
+						String nome = campos[0];
+						String cpf = campos[1];
+						String senha = campos[2];
+						String cref = campos[3];
+						try {
+							Especialidades especialidade = Especialidades.valueOf(campos[4].toUpperCase());
+							Pessoa personal = new Personal(nome,cpf,senha,cref,especialidade);
+							BancoDeDados.adicionarPessoaNaListaCorreta(personal);
+						}catch (IllegalArgumentException e) {
+							System.out.println("Especialidade inválida para o personal " + nome + ": " + campos[4]);
+						}
+
+					}
+
+					System.out.println("\nPersonal Lidos do Arquivo CSV: ");
+					BancoDeDados.listaPersonal().forEach(System.out::println);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 // Ler Alunos
-		Path path = Paths.get("C:\\Users\\prcc9\\eclipse-workspace\\TrabalhoPOO\\Sistema-Academia\\aluno.csv");
+		
+		Path path3 = Paths.get("C:\\Users\\SERRAE\\Desktop\\Trabalho POO\\Sistema-Academia\\aluno.csv");
 
-		try (BufferedReader reader = Files.newBufferedReader(path)){
+		try (BufferedReader reader = Files.newBufferedReader(path3)){
 			String linha = reader.readLine(); //vai ignorar o cabeçalho igual a prof ensinou
 
 			while((linha = reader.readLine()) != null) {
@@ -52,7 +113,7 @@ public class LeitorCSV {
 			BancoDeDados.adicionarPessoaNaListaCorreta(aluno);
 			}
 
-			System.out.println("Alunos Lidos do Arquivo CSV: ");
+			System.out.println("\nAlunos Lidos do Arquivo CSV: ");
 			BancoDeDados.listaAlunos().forEach(System.out::println);
 
 		} catch(IOException e) {
@@ -62,9 +123,9 @@ public class LeitorCSV {
 
 //// Ler Funcionarios
 
-		Path path2 = Paths.get("C:\\Users\\prcc9\\eclipse-workspace\\TrabalhoPOO\\Sistema-Academia\\funcionario.csv");
+		Path path4 = Paths.get("C:\\Users\\SERRAE\\Desktop\\Trabalho POO\\Sistema-Academia\\funcionario.csv");
 
-		try (BufferedReader br = Files.newBufferedReader(path2)) {
+		try (BufferedReader br = Files.newBufferedReader(path4)) {
 			String linha = br.readLine();
 
 			while ((linha = br.readLine()) != null) {
@@ -82,78 +143,19 @@ public class LeitorCSV {
 
 			}
 
-			System.out.println("Lido CSV: ");
+			System.out.println("\nFuncionários Lidos do Arquivo CSV: ");
 			BancoDeDados.listaFuncionarios().forEach(System.out::println);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+	
 		
-// Ler Personal
-		
-		Path path3 = Paths.get("C:\\Users\\prcc9\\eclipse-workspace\\TrabalhoPOO\\Sistema-Academia\\Personal.csv");
-
-		try (BufferedReader br = Files.newBufferedReader(path3)) {
-			String linha = br.readLine();
-
-			while ((linha = br.readLine()) != null) {
-				String[] campos = linha.split(",");
-				String nome = campos[0];
-				String cpf = campos[1];
-				String senha = campos[2];
-				String cref = campos[3];
-				try {
-					Especialidades especialidade = Especialidades.valueOf(campos[4].toUpperCase());
-					Pessoa personal = new Personal(nome,cpf,senha,cref,especialidade);
-					BancoDeDados.adicionarPessoaNaListaCorreta(personal);
-				}catch (IllegalArgumentException e) {
-					System.out.println("Especialidade inválida para o personal " + nome + ": " + campos[4]);
-				}
-
-			}
-
-			System.out.println("Lido CSV: ");
-			BancoDeDados.listaPersonal().forEach(System.out::println);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-//		Ler Planos	
-
-		Path path4 = Paths.get("C:\\Users\\prcc9\\eclipse-workspace\\TrabalhoPOO\\Sistema-Academia\\plano.csv");
-
-		try (BufferedReader br = Files.newBufferedReader(path4)) {
-			String linha = br.readLine();
-
-			while ((linha = br.readLine()) != null) {
-				String[] campos = linha.split(",");
-
-				String descricao = campos[1];
-				double valor = Double.parseDouble(campos[2]);
-				try {
-					PlanoEnum plano = PlanoEnum.valueOf(campos[0].toUpperCase());
-					try {
-						BancoDeDados.adicionarPlano(new Plano(plano,descricao,valor));
-					} catch (ValorInvalidoException e) {
-						 // tem que testar isso aqui, ou retirar esse try/catch
-						e.printStackTrace();
-					}
-				} catch (IllegalArgumentException e) {
-					System.out.println("Periodicidade inválida: " + campos[0]);
-				}
-			}
-
-			System.out.println("Lido CSV: ");
-			BancoDeDados.listaPlanos().forEach(System.out::println);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 //// Ler Avaliações
-		Path path5 = Paths.get("C:\\Users\\prcc9\\eclipse-workspace\\TrabalhoPOO\\Sistema-Academia\\Avaliacao.csv");
+
+		Path path5 = Paths.get("C:\\Users\\SERRAE\\Desktop\\Trabalho POO\\Sistema-Academia\\avaliacao.csv");
 
 		try (BufferedReader br = Files.newBufferedReader(path5)) {
 			String linha = br.readLine();
@@ -184,7 +186,7 @@ public class LeitorCSV {
 
 				Avaliacao avaliacao = new Avaliacao(aluno,dataRegistro,personal,descricao);
 				BancoDeDados.adicionarAvaliacao(avaliacao);			}
-			System.out.println("Lido CSV: ");
+			System.out.println("\nAvaliações Lidas do Arquivo CSV: ");
 			BancoDeDados.listaAvaliacoes().forEach(System.out::println);
 		} catch (IOException e) {
 			e.printStackTrace();

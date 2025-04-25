@@ -1,6 +1,5 @@
 package org.serratec.trabalho.metodos;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +95,7 @@ public class BancoDeDados {
 		todos.addAll(funcionarios);
 		return todos;
 	}
+	
 	public static Pessoa buscarPessoaPorCpf(String cpf){
 		for (Pessoa p : listaTodasAsPessoas()) {
 			if (p.getCpf().equals(cpf)) {

@@ -27,7 +27,7 @@ public class AcademiaApp {
 		Pessoa funcionario = new Funcionario("Paulo", "22222222222", "9874", CargoFuncionario.DONO);
 		BancoDeDados.adicionarPessoaNaListaCorreta(funcionario);
 
-	//LeitorCSV.inicializador();
+	LeitorCSV.inicializador();
 	Menu.Login();
 
 	}

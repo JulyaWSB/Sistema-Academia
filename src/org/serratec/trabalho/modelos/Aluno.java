@@ -80,7 +80,12 @@ public class Aluno extends Pessoa {
 	}
 
 	@Override
-	public String toString() {
-		return nome;
+	public String toString() { // usar nos arquivos
+		return  " -------------------- " +
+		"\nNome: " + nome +
+		"\nCPF: " + cpf + 
+		"\nSenha: " + senha + 
+		"\nData de matricula: " + dataMatricula +
+		"\nPlano: " + plano ;
 	}
 }

@@ -16,7 +16,7 @@ public class Personal extends Pessoa{
 		this.especialidade = especialidade;
 	}
 
-	public void visualizarAlunos() {
+	public boolean visualizarAlunos() {
 	    boolean encontrouAluno = false;
 	    int contador = 1;  
 	    
@@ -32,8 +32,8 @@ public class Personal extends Pessoa{
 
 	    if (!encontrouAluno) {
 	        System.out.println("Nenhum aluno vinculado.");
-	        return;
-	    }
+	        
+	    } return encontrouAluno;
 	}
 	
 	public void registrarAvaliacao(Aluno aluno, LocalDate data,  Personal personal,  String descricao) {
@@ -84,5 +84,17 @@ public class Personal extends Pessoa{
 		System.out.println("Nome:" + nome);
 		System.out.println("Especialidade:" + especialidade);
 	}
+
+	@Override
+	public String toString() { // usado só nos arquivos
+		return  " -------------------- " +
+			"\nNome: " + nome +
+			"\nCPF: " + cpf + 
+			"\nSenha: " + senha + 
+			"\nCREF: " + cref +
+			"\nEspecialidade: " + especialidade;
+	}
+	
+	
 	
 }

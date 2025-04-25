@@ -121,5 +121,16 @@ public class Funcionario extends Pessoa{
         }
         System.out.println(contador != 0? "Alunos ativos: " + contador + " no mês de " + mes + "." : " ");
     }
+
+	@Override
+	public String toString() { // usado só nos arquivos
+		return " -------------------- " +
+			"\nNome: " + nome +
+			"\nCPF: " + cpf + 
+			"\nSenha: " + senha + 
+			"\nCargo: " + cargo;
+	}
+	
+	
     
 }

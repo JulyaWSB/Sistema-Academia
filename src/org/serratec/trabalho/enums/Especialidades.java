@@ -22,6 +22,11 @@ public enum Especialidades {
 	Especialidades(String descricao) {
         this.descricao = descricao;
     }
+	
+	@Override
+    public String toString() {
+        return descricao;
+    }
 
     public String getDescricao() {
         return descricao;

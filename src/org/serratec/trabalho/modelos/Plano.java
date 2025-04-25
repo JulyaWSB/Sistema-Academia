@@ -32,9 +32,19 @@ public class Plano {
 		return valor;
 	}
 
-	public void exibirPlano() {
+	public void exibirPlano() { // tirar isso e usar o toString no lugar?
 		System.out.println("      Periodicidade - " + plano
 						+ "\n      Descrição - " + descricao
 						+ "\n      Valor - R$" + valor);
 	}
+
+
+	@Override
+	public String toString() {
+		return "Periodicidade: " + plano +
+				"\n      Descrição - " + descricao + 
+				"\n      Valor - R$" + valor;
+	}
+	
+	
 }

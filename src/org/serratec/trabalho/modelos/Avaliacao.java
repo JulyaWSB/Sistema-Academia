@@ -34,8 +34,22 @@ public class Avaliacao {
     public void exibirDados() {
     	System.out.println("Aluno: " + aluno);
 		System.out.println("\nData: " + data);
-		System.out.println("\nPersonal " + personal);
-		System.out.println("\nDescricao: " + descricao);
-    }}
+		System.out.println("\nPersonal " + personal.getNome());
+		System.out.println("\nDescrição: " + descricao);
+    }
+
+	@Override
+	public String toString() { // usada só nos arquivos
+		return " -------------------- " +
+				"\nAluno: " + aluno +
+				"\nData: " + data +
+				"\nPersonal: " + personal.getNome() +
+				"\nDescrição: " + descricao;
+	}
+   
+    
+}
+
+	
 
 

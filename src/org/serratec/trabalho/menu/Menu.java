@@ -23,7 +23,7 @@ import org.serratec.trabalho.modelos.Plano;
 public class Menu {
 	Scanner sc = new Scanner(System.in);
 	
-	    public static void Login() throws ValorInvalidoException {
+	public static void Login() throws ValorInvalidoException {
 	    Scanner sc = new Scanner(System.in);
 	    String cpf;
 	    System.out.println("\n ------- Login -------");
@@ -189,9 +189,13 @@ public class Menu {
 
 	public static void avaliacaoRegistrar(Personal personalLogado) {
 		Scanner sc = new Scanner(System.in);
+		
 		System.out.println("Alunos Disponíveis: ");
-		personalLogado.visualizarAlunos();
-
+		boolean temAlunos = personalLogado.visualizarAlunos();
+		
+		if (!temAlunos){
+			return;
+		}
 		System.out.println("Digite o nome do aluno a registrar avaliação: ");
 		String nomeAluno = sc.nextLine();
 
@@ -249,6 +253,7 @@ public class Menu {
 		 Scanner sc = new Scanner(System.in);
 		    String opcao;
 		    String cpf;
+		    String senha;
 
 		    do {
 		        System.out.println("Insira o nome do aluno: ");
@@ -274,8 +279,14 @@ public class Menu {
 		            }
 		        }
 
-		        System.out.println("Insira a senha: ");
-		        String senha = sc.nextLine();
+		        do {
+			        System.out.println("Insira a senha: ");
+			        senha = sc.nextLine();
+			        if (!validarSenha(senha)) {
+			        	System.out.println("Senha inválida. Deve conter exatamente no mínimo 6 dígitos.");
+			        	}
+			        } while (!validarSenha(senha));
+			
 
 		        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		        System.out.println("Data de matrícula (dd/MM/yyyy): ");
@@ -308,6 +319,7 @@ public class Menu {
 		 Scanner sc = new Scanner(System.in);
 		    String opcao = null;
 		    String cpf;
+		    String senha;
 
 		    do {
 		        System.out.println("Insira o nome do personal: ");
@@ -332,10 +344,14 @@ public class Menu {
 		                }
 		            }
 		        }
-
+		        do {
 		        System.out.println("Insira a senha: ");
-		        String senha = sc.nextLine();
-
+		        senha = sc.nextLine();
+		        if (!validarSenha(senha)) {
+		        	System.out.println("Senha inválida. Deve conter exatamente no mínimo 6 dígitos.");
+		        	}
+		        } while (!validarSenha(senha));
+		
 		        System.out.println("Insira a CREF: ");
 		        String cref = sc.nextLine();
 
@@ -363,6 +379,10 @@ public class Menu {
 	
 	private static boolean validarCpf(String cpf) {
 	    return cpf != null && cpf.matches("\\d{11}");
+	}
+	
+	private static boolean validarSenha(String senha){
+		  return senha != null && senha.length() >= 6;
 	}
 	
 }
