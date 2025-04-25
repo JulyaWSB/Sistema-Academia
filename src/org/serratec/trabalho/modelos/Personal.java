@@ -1,6 +1,7 @@
 package org.serratec.trabalho.modelos;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.serratec.trabalho.enums.Especialidades;
 import org.serratec.trabalho.metodos.BancoDeDados;
@@ -16,18 +17,25 @@ public class Personal extends Pessoa{
 	}
 
 	public void visualizarAlunos() {
-		boolean encontrouAluno = false;
-		for (Aluno al : BancoDeDados.listaAlunos()) {
-			if (this.equals(al.getPersonalContratado())) {
-				al.exibirDados();  
-				encontrouAluno = true;
-			}
-		}
-		if (!encontrouAluno) {
-			System.out.println("Nenhum aluno vinculado.");
-		}
-	}
+	    boolean encontrouAluno = false;
+	    int contador = 1;  
+	    
+	    for (Aluno al : BancoDeDados.listaAlunos()) {
+	        if (this.equals(al.getPersonalContratado())) {
+	            System.out.println(contador + " - Nome: " + al.getNome() + 
+	                               ", CPF: " + formatarCpf(al.getCpf()) + 
+	                               ", Plano: " + al.getPlano().getDescricao());
+	            contador++;
+	            encontrouAluno = true;
+	        }
+	    }
 
+	    if (!encontrouAluno) {
+	        System.out.println("Nenhum aluno vinculado.");
+	        return;
+	    }
+	}
+	
 	public void registrarAvaliacao(Aluno aluno, LocalDate data,  Personal personal,  String descricao) {
 		Avaliacao novaAvaliacao = new Avaliacao(aluno, data, personal, descricao);
 		BancoDeDados.adicionarAvaliacao(novaAvaliacao);
@@ -35,17 +43,33 @@ public class Personal extends Pessoa{
 	} 
 
 	public void visualizarAvaliacoes() {
-		boolean encontrouAvaliacao = false;
-		for (Avaliacao av : BancoDeDados.listaAvaliacoes()) {
-			if (av.getPersonal().equals(this)) {
-				av.exibirDados();
-				encontrouAvaliacao = true;
-			}}
-		if (!encontrouAvaliacao) {
-			System.out.println("Nenhuma avaliação registrada."); //podemos adicionar tratamento nesse e no de visualizarAlunos para retornar ao menu se quiserem
-		}
+	    boolean encontrouAvaliacao = false;
 
-
+	    DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
+	    for (Avaliacao av : BancoDeDados.listaAvaliacoes()) {
+	        if (av.getPersonal().equals(this)) {
+	            System.out.println("Data: " + av.getData().format(formatoData));
+	            System.out.println("Aluno: " + av.getAluno().getNome() + 
+	                               ", CPF: " + formatarCpf(av.getAluno().getCpf()));
+	            System.out.println("Personal: " + av.getPersonal().getNome());
+	            System.out.println("Descrição da avaliação: " + av.getDescricao());
+	            System.out.print("\n");
+	            encontrouAvaliacao = true;
+	        }
+	    }
+	   
+	    if (!encontrouAvaliacao) {
+	        System.out.println("Nenhuma avaliação registrada.");
+	        return;
+	    }
+	}
+	
+	private static String formatarCpf(String cpf) {
+	    return cpf.substring(0, 3) + "." +
+	           cpf.substring(3, 6) + "." +
+	           cpf.substring(6, 9) + "-" +
+	           cpf.substring(9, 11);
 	}
 
 	public String getCref() {
@@ -60,12 +84,5 @@ public class Personal extends Pessoa{
 		System.out.println("Nome:" + nome);
 		System.out.println("Especialidade:" + especialidade);
 	}
-
-	@Override
-	public String toString() {
-		return nome  + "\nEspecialidade: " + especialidade;
-	}
-	
-	
 	
 }

@@ -33,8 +33,8 @@ public class Plano {
 	}
 
 	public void exibirPlano() {
-		System.out.println("Periodicidade: " + plano
-						+ "\nDescrição: " + descricao
-						+ "\nValor: R$" + valor);
+		System.out.println("      Periodicidade - " + plano
+						+ "\n      Descrição - " + descricao
+						+ "\n      Valor - R$" + valor);
 	}
 }

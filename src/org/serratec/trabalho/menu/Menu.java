@@ -25,9 +25,16 @@ public class Menu {
 	
 	    public static void Login() throws ValorInvalidoException {
 	    Scanner sc = new Scanner(System.in);
-	    System.out.println("\n ----Login----");
-	    System.out.println("Insira seu Cpf: ");
-	    String cpf = sc.nextLine();
+	    String cpf;
+	    System.out.println("\n ------- Login -------");
+	    do {
+            System.out.println("Insira o CPF (apenas números, 11 dígitos): ");
+            cpf = sc.nextLine();
+
+            if (!validarCpf(cpf)) {
+                System.out.println("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
+            }
+        } while (!validarCpf(cpf));
 
 	    System.out.println("Insira sua senha: ");
 	    String senha = sc.nextLine();
@@ -52,7 +59,7 @@ public class Menu {
 		} else if (pessoaLogada instanceof Funcionario) {
 			exibirMenuFuncionario((Funcionario) pessoaLogada);
 		} else {
-			System.out.println("Tipo de usuário desconhecido."); // ou uma exceção
+			System.out.println("Tipo de usuário desconhecido."); 
 		}}
 
 	
@@ -63,9 +70,9 @@ public class Menu {
 		Scanner sc = new Scanner(System.in);
 		int opcao;
 		do {
+			System.out.println("\n------- BEM-VINDO " + alunoLogado.getNome().toUpperCase() + " -------");
 			String menu = """
-					\n____BEM-VINDO ALUNO____
-					\n____MENU____
+					\n------- MENU ALUNO -------
 					1.Visualizar Dados Pessoais e Plano Contratado
 					2.Contratar Personal Trainer
 					3.Visualizar Avaliações Físicas
@@ -81,8 +88,8 @@ public class Menu {
 			case 2 -> personalContratar(alunoLogado);
 			case 3 -> alunoLogado.visualizarAvaliacoes(alunoLogado);
 			case 4 -> retornoLogin();
-			case 5 -> System.out.println("____Programa Encerrando____");
-			default -> System.out.println("____Opção Invalida, tente novamente!____");
+			case 5 -> System.out.println("== Programa Encerrando ==");
+			default -> System.out.println("== Opção Invalida, tente novamente! ==");
 			}
 
 		}while(opcao != 5);
@@ -92,9 +99,9 @@ public class Menu {
 		Scanner sc = new Scanner(System.in);
 		int opcao;
 		do {
+			System.out.println("\n------- BEM-VINDO " + personalLogado.getNome().toUpperCase() + " -------");
 			String menu = """
-					\n____BEM-VINDO PERSONAL____
-					\n____MENU____
+					\n------- MENU PERSONAL -------
 					1.Visualizar Alunos
 					2.Registrar Avaliações Físicas dos Alunos
 					3.Visualizar Lista de Avaliações Realizadas
@@ -110,8 +117,8 @@ public class Menu {
 			case 2 -> avaliacaoRegistrar(personalLogado);
 			case 3 -> personalLogado.visualizarAvaliacoes();
 			case 4 -> retornoLogin();
-			case 5 -> System.out.println("____Programa Encerrando____");
-			default -> System.out.println("____Opção Invalida, tente novamente!____");
+			case 5 -> System.out.println("== Programa Encerrando ==");
+			default -> System.out.println("== Opção Invalida, tente novamente! ==");
 			}
 
 		}while(opcao != 5);
@@ -121,10 +128,9 @@ public class Menu {
 		Scanner sc = new Scanner(System.in);
 		int opcao;
 		do {
-			System.out.println("\\n____BEM-VINDO FUNCIONARIO____" + funcionarioLogado.getNome());
+			System.out.println("\n------- BEM-VINDO " + funcionarioLogado.getNome().toUpperCase() + " -------");
 			String menu = """
-					\n____BEM-VINDO FUNCIONARIO____
-					\n____MENU____
+					\n------- MENU fUNCIONÁRIO -------
 					1.Cadastrar Novo Plano
 					2.Cadastrar Novo Aluno
 					3.Cadastrar Novo Personal Trainer
@@ -146,8 +152,8 @@ public class Menu {
 			case 5 -> funcionarioLogado.exibirTotalReceberNoMes(BancoDeDados.listaAlunos());
 			case 6 -> funcionarioLogado.contarAlunosAtivosNoMes(BancoDeDados.listaAlunos());
 			case 7 -> retornoLogin();
-			case 8 -> System.out.println("____Programa Encerrando____");
-			default -> System.out.println("____Opção Invalida, tente novamente!____");
+			case 8 -> System.out.println("== Programa Encerrando ==");
+			default -> System.out.println("== Opção Invalida, tente novamente! ==");
 			}
 
 		}while(opcao != 8);
@@ -166,9 +172,8 @@ public class Menu {
 		System.out.println("Lista de Personals Disponíveis");
 		for (Personal p: BancoDeDados.listaPersonal()) {
 			System.out.print("- ");  p.exibirPersonal(); 
-			System.out.println("\n");
 		}
-		System.out.println("\n Digite o nome do Personal que deseja contratar:");
+		System.out.println("\nDigite o nome do Personal que deseja contratar:");
 		String nomePersonal = sc.nextLine();
 
 		for (Personal p: BancoDeDados.listaPersonal()) {
@@ -241,72 +246,124 @@ public class Menu {
 	}
 
 	public static void alunoCadastrar(Funcionario funcionarioLogado){
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Insira o nome do aluno: ");
-		String nome = sc.nextLine();
-		System.out.println("Insira o CPF: ");
-		String cpf = sc.nextLine();
-		for (Pessoa pessoa : BancoDeDados.listaTodasAsPessoas()) {
-	        if (pessoa.getCpf().equals(cpf)) {
-	            try {
-	                throw new CpfDuplicadosExcecao(cpf);
-	            } catch (CpfDuplicadosExcecao e) {
-	                System.out.println("Erro: " + e.getMessage());
-	                return;
-	            }
-	        }
-	    }
-		System.out.println("Insira a senha: ");
-		String senha = sc.nextLine();
-		DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		System.out.println("Data de matricula: ");
-		String data = sc.nextLine();
-		LocalDate dataMatricula = LocalDate.parse(data, formatador);
-		
+		 Scanner sc = new Scanner(System.in);
+		    String opcao;
+		    String cpf;
 
-		PlanoMetodos.listarPlanos();
-		System.out.println("Digite o número do plano desejado:");
-		int numPlano = sc.nextInt();
-		sc.nextLine();
-		if (numPlano < 1 || numPlano> BancoDeDados.planos.size()) {
-			System.out.println("Opção Inválida. Digite um número da lista.");
-			return;
+		    do {
+		        System.out.println("Insira o nome do aluno: ");
+		        String nome = sc.nextLine();
+
+		        do {
+		            System.out.println("Insira o CPF (apenas números, 11 dígitos): ");
+		            cpf = sc.nextLine();
+
+		            if (!validarCpf(cpf)) {
+		                System.out.println("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
+		            }
+		        } while (!validarCpf(cpf));
+
+		        for (Pessoa pessoa : BancoDeDados.listaTodasAsPessoas()) {
+		            if (pessoa.getCpf().equals(cpf)) {
+		                try {
+		                    throw new CpfDuplicadosExcecao(cpf);
+		                } catch (CpfDuplicadosExcecao e) {
+		                    System.out.println("Erro: " + e.getMessage());
+		                    return;
+		                }
+		            }
+		        }
+
+		        System.out.println("Insira a senha: ");
+		        String senha = sc.nextLine();
+
+		        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		        System.out.println("Data de matrícula (dd/MM/yyyy): ");
+		        String data = sc.nextLine();
+		        LocalDate dataMatricula = LocalDate.parse(data, formatador);
+
+		        PlanoMetodos.listarPlanos();
+		        System.out.println("Digite o número do plano desejado:");
+		        int numPlano = sc.nextInt();
+		        sc.nextLine(); 
+
+		        if (numPlano < 1 || numPlano > BancoDeDados.planos.size()) {
+		            System.out.println("Opção Inválida. Digite um número da lista.");
+		            return;
+		        }
+
+		        Plano planoEscolhido = BancoDeDados.planos.get(numPlano - 1);
+
+		        funcionarioLogado.cadastrarAluno(nome, cpf, senha, dataMatricula, planoEscolhido);
+		        
+		        System.out.println("\nDeseja cadastrar outro aluno? (S/N)");
+		        opcao = sc.nextLine().trim().toUpperCase();
+		    } while (opcao.equals("S"));
+
+		    System.out.println("Retornando ao menu...");
 		}
-		Plano planoEscolhido= BancoDeDados.planos.get(numPlano -1);
-
-		funcionarioLogado.cadastrarAluno(nome, cpf, senha, dataMatricula, planoEscolhido);
-	}
 
 
 	public static void personalCadastrar(Funcionario funcionarioLogado){
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Insira o nome do personal: ");
-		String nome = sc.nextLine();
-		System.out.println("Insira o CPF: ");
-		String cpf = sc.nextLine();
-		for (Pessoa pessoa : BancoDeDados.listaTodasAsPessoas()) {
-	        if (pessoa.getCpf().equals(cpf)) {
-	            try {
-	                throw new CpfDuplicadosExcecao(cpf);
-	            } catch (CpfDuplicadosExcecao e) {
-	                System.out.println("Erro: " + e.getMessage());
-	                return;
-	            }
-	        }
+		 Scanner sc = new Scanner(System.in);
+		    String opcao = null;
+		    String cpf;
+
+		    do {
+		        System.out.println("Insira o nome do personal: ");
+		        String nome = sc.nextLine();
+
+		        do {
+		            System.out.println("Insira o CPF (apenas números, 11 dígitos): ");
+		            cpf = sc.nextLine();
+
+		            if (!validarCpf(cpf)) {
+		                System.out.println("CPF inválido. Deve conter exatamente 11 dígitos numéricos.");
+		            }
+		        } while (!validarCpf(cpf));
+
+		        for (Pessoa pessoa : BancoDeDados.listaTodasAsPessoas()) {
+		            if (pessoa.getCpf().equals(cpf)) {
+		                try {
+		                    throw new CpfDuplicadosExcecao(cpf);
+		                } catch (CpfDuplicadosExcecao e) {
+		                    System.out.println("Erro: " + e.getMessage());
+		                    return;
+		                }
+		            }
+		        }
+
+		        System.out.println("Insira a senha: ");
+		        String senha = sc.nextLine();
+
+		        System.out.println("Insira a CREF: ");
+		        String cref = sc.nextLine();
+
+		        System.out.println("Insira a especialidade: ");
+		        String especialidade = sc.nextLine().toUpperCase();
+
+		        try {
+		            Especialidades espec = Especialidades.valueOf(especialidade);
+		            funcionarioLogado.cadastrarPersonal(nome, cpf, senha, cref, espec);
+		        } catch (IllegalArgumentException e) {
+		            System.out.println("Especialidade inválida. Tente novamente: ");
+		            continue;
+		        }
+
+		        System.out.println("\nDeseja cadastrar outro personal? (S/N)");
+		        opcao = sc.nextLine().trim().toUpperCase();
+		    } while (opcao.equals("S"));
+
+		    System.out.println("== Retornando ao menu ==");
 		}
-		System.out.println("Insira a senha: ");
-		String senha = sc.nextLine();
-		System.out.println("Insira a CREF:");
-		String cref = sc.nextLine();
-		String especialidade = sc.nextLine().toUpperCase();
-		Especialidades espec = Especialidades.valueOf(especialidade);
-		funcionarioLogado.cadastrarPersonal(nome, cpf, senha, cref, espec);
-	}
 
 	public static void retornoLogin() throws ValorInvalidoException {
 		Login();
 	}
 	
-
+	private static boolean validarCpf(String cpf) {
+	    return cpf != null && cpf.matches("\\d{11}");
+	}
+	
 }
 
