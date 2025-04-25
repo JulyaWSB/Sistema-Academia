@@ -87,7 +87,7 @@ public class Personal extends Pessoa{
 
 	@Override
 	public String toString() { // usado só nos arquivos
-		return  " -------------------- " +
+		return  " ---------------------------------------------------------------------------------------- " +
 			"\nNome: " + nome +
 			"\nCPF: " + cpf + 
 			"\nSenha: " + senha + 

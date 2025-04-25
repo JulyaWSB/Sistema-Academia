@@ -40,7 +40,7 @@ public class Avaliacao {
 
 	@Override
 	public String toString() { // usada só nos arquivos
-		return " -------------------- " +
+		return " ---------------------------------------------------------------------------------------- " +
 				"\nAluno: " + aluno +
 				"\nData: " + data +
 				"\nPersonal: " + personal.getNome() +

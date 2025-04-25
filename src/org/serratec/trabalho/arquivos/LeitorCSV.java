@@ -48,7 +48,7 @@ public class LeitorCSV {
 					System.out.println("Periodicidade inválida: " + campos[0]);
 				}
 			}
-
+			
 			System.out.println("\nPlanos Lidos do Arquivo CSV: ");
 			BancoDeDados.listaPlanos().forEach(System.out::println);
 
@@ -57,7 +57,6 @@ public class LeitorCSV {
 		}
 
 // Ler Personal
-		
 				Path path2 = Paths.get("C:\\Users\\SERRAE\\Desktop\\Trabalho POO\\Sistema-Academia\\personal.csv");
 
 				try (BufferedReader br = Files.newBufferedReader(path2)) {
@@ -93,6 +92,10 @@ public class LeitorCSV {
 			String linha = reader.readLine(); //vai ignorar o cabeçalho igual a prof ensinou
 
 			while((linha = reader.readLine()) != null) {
+				if (linha.length() < 5) {
+				    System.out.println("Linha inválida: " + linha);
+				    continue;
+				}
 				String[] campos = linha.split(",");
 				String nome  = campos[0];
 				String cpf = campos[1];
@@ -122,7 +125,6 @@ public class LeitorCSV {
 
 
 //// Ler Funcionarios
-
 		Path path4 = Paths.get("C:\\Users\\SERRAE\\Desktop\\Trabalho POO\\Sistema-Academia\\funcionario.csv");
 
 		try (BufferedReader br = Files.newBufferedReader(path4)) {
@@ -149,8 +151,6 @@ public class LeitorCSV {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-	
 		
 
 //// Ler Avaliações
@@ -169,19 +169,19 @@ public class LeitorCSV {
 
 				Pessoa pessoaAluno = BancoDeDados.buscarPessoaPorCpf(cpfAluno);
 				if (!(pessoaAluno instanceof Aluno)) {
-					System.out.println("CPF informado não está vinculado a um aluno.");
+					System.out.println("CPF " + cpfAluno +" informado não está vinculado a um aluno.");
 					continue;
 				}
 				Aluno aluno = (Aluno) pessoaAluno;
 
 				Pessoa pessoaPersonal = BancoDeDados.buscarPessoaPorCpf(cpfPersonal);
 				if (!(pessoaPersonal instanceof Personal)) {
-					System.out.println("CPF informado não está vinculado a um personal.");
+					System.out.println("CPF " + cpfPersonal + " informado não está vinculado a um personal.");
 					continue;
 				}
 				Personal personal = (Personal) pessoaPersonal;
 
-				DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+				DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 				LocalDate dataRegistro = LocalDate.parse(dataString, formatador);
 
 				Avaliacao avaliacao = new Avaliacao(aluno,dataRegistro,personal,descricao);

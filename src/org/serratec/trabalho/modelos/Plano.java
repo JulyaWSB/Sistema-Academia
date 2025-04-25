@@ -41,7 +41,8 @@ public class Plano {
 
 	@Override
 	public String toString() {
-		return "Periodicidade: " + plano +
+		return " ---------------------------------------------------------------------------------------- " +
+				"\nPeriodicidade: " + plano +
 				"\n      Descrição - " + descricao + 
 				"\n      Valor - R$" + valor;
 	}

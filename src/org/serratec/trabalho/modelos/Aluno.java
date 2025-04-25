@@ -81,7 +81,7 @@ public class Aluno extends Pessoa {
 
 	@Override
 	public String toString() { // usar nos arquivos
-		return  " -------------------- " +
+		return  " ---------------------------------------------------------------------------------------- " +
 		"\nNome: " + nome +
 		"\nCPF: " + cpf + 
 		"\nSenha: " + senha + 
