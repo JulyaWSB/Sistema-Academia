@@ -38,7 +38,7 @@ public class Menu {
 			exibirMenuCorreto(pessoaLogada);
 		} catch (LoginExcecao e) {
 			System.out.println(e.getMessage());
-			return;
+			retornoLogin();
 		}
 	       
 	}

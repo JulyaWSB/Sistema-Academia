@@ -15,6 +15,8 @@ import org.serratec.trabalho.metodos.BancoDeDados;
 import org.serratec.trabalho.metodos.PlanoMetodos;
 import org.serratec.trabalho.metodos.UsuarioMetodos;
 import org.serratec.trabalho.relatorios.RelatorioAvaliacaoMensal;
+import org.serratec.trabalho.relatorios.RelatorioPessoas;
+import org.serratec.trabalho.relatorios.RelatorioPlanos;
 
 public class Funcionario extends Pessoa{
 	private CargoFuncionario cargo;
@@ -65,8 +67,8 @@ public class Funcionario extends Pessoa{
             String menu = """
                     \n____MENU DE RELATÓRIOS____
                     1. Relatório de Avaliações
-                    2. Relatório de Planos
-                    3. Relatório de Pessoas
+                    2. Relatório de Pessoas
+                    3. Relatório de Planos
                     4. Sair
                     """;
             System.out.println(menu);
@@ -74,10 +76,9 @@ public class Funcionario extends Pessoa{
             scanner.nextLine();
 
             switch (opcao) {
-                case 1 ->  new RelatorioAvaliacaoMensal().gerar(); // Relatório de Avaliações
-                //case 2-> 
-                //case 3->
-                //case 4 ->
+                case 1 -> new RelatorioAvaliacaoMensal().gerar(); // Relatório de Avaliações
+                case 2 -> new RelatorioPessoas().gerar();   
+                case 3 -> new RelatorioPlanos().gerar();
                    
                 default ->
                     System.out.println("Opção inválida! Tente novamente.");
